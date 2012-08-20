@@ -1,7 +1,7 @@
 //Marylia Nieves
 //Visual Frameworks (VFW) 
-//Assignment 3
-// 8/16/12 
+//Assignment 4
+// 8/23/12 
 //var chameleon = "blue";
 //alert (chameleon);
 
@@ -73,7 +73,7 @@ window.addEventListener ("DOMContentLoaded", function(){
 			id = key; 
 		}
 
-		
+
 		//Gather up all our form field values and store in an object.
 		//Object properties contain array with the form label and input value.
 		getSelectedCheckbox ();
@@ -89,6 +89,13 @@ window.addEventListener ("DOMContentLoaded", function(){
 		localStorage.setItem  (id, JSON.stringify (item));
 		alert ("Task Saved!");
 
+	}
+function getImage(catName, makeSubList){
+		var imageLi = document.createElement('li');
+		makeSubList.appendChild(imageli);
+		var newImg = document.createElement('img');
+		var setSrc = newImg.setAttribute("src", "images/"+catName+".png");
+		imageLi.appendChild(newImg);
 	}
 
 
@@ -115,6 +122,7 @@ function getData(){
 			var obj = JSON.parse (value);
 			var makeSubList = document.createElement ('ul');
 			makeli.appendChild (makeSubList);
+			getImage(obj.category[1], makeSubList);
 			for (var m in obj){
 				var makeSubli = document.createElement ('li');
 				makeSubList.appendChild (makeSubli);
@@ -135,10 +143,10 @@ function getData(){
 			localStorage.setItem(id, JSON.stringify(json[n]));
 		}		
 	}
-	
-	
-	
-	
+
+
+
+
 	//Create the edit and delete links for each item.
 	function makeItemLinks(key, linksLi){
 		var editLink=document.createElement('a');
@@ -164,10 +172,10 @@ function getData(){
 		//Grab the data from our item from Local Storage.
 		var value = localStorage.getItem (this.key);
 		var item = JSON.parse(value);
-		
+
 		//Show the forms
 		toggleControls("off");
-		
+
 		//Populate the form fields with the current localStorage values.
 		var checkbox = document.forms[0].weekday;
 		for (var i=0; i<checkbox.length; i++) {
@@ -196,7 +204,7 @@ function getData(){
 		$('category').value = item.category [1];
 		$('dueDate').value = item.date [1];
 		$('comments').value = item.comments [1];
-		
+
 		//Remove the inital listener from the input 'sace contact' button.
 		save.removeEventListener ("click", storeData);
 		//Change Submit Button Balue to Edit Button
@@ -206,7 +214,7 @@ function getData(){
 		//so we can use that value when we save the data we edited.
 		editsubmit.addEventListener ("click",validate);
 		editSubmit.key = this.key;
-		 
+
 	}
 	function deleteItem(){
 		var ask = confirm("Are you sure you want to delete this task?");
@@ -218,8 +226,8 @@ function getData(){
 			alert ("Task was NOT deleted.");
 		}
 	}
-	
-	
+
+
 	function clearLocal() {
 		if (localStorage.length===0){
 			alert("There is no task to clear.");
@@ -238,14 +246,14 @@ function getData(){
 		var getSub = $('sub');
 		var getPeriod = $('period');
 		var getGrade = $('grade');
-		
+
 		//Reset the Error Messages
 		errMsg.innerHTML = "";
 		getSub.style.border = "1px solid black";
 		getPeriod.style.border = "1px solid black";
 		getGrade.style.border = "1px solid black";
-		
-	
+
+
 		//Get error messages
 		var messageArray= [];
 		//Sub Validation 
@@ -272,7 +280,7 @@ function getData(){
 			var txt = document.createElement('li');
 			txt.innerHTML = messageArray[i];
 			errMsg.appendChild(txt);
-			
+
 			}
 			preventDefault();
 			return false;  
@@ -281,10 +289,10 @@ function getData(){
 			//remember this key value was passed through the editSubmit event listener as property
 			storeData(this.key);  
 		}
-		
+
 	}
-	
-	
+
+
 	//Variable defaults
 	var taskCategories=["Choose a task", "Grade papers", "Contact parents", "Meetings", "Write lesson plans", "Test", "Projects", "Others"],
 		dayValue;
