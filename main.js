@@ -33,7 +33,7 @@ window.addEventListener ("DOMContentLoaded", function(){
 
 	//Find the value of selected checkboxes
 	function getSelectedCheckbox () {
-		var checkbox =document.forms [0].weekday;
+		var checkbox =document.forms[0].weekday;
 		for (var i=0; i<checkbox.length; i++){
 			if (checkbox[i].checked) {
 			dayValue = checkbox [i].value;
@@ -92,7 +92,7 @@ window.addEventListener ("DOMContentLoaded", function(){
 	}
 function getImage(catName, makeSubList){
 		var imageLi = document.createElement('li');
-		makeSubList.appendChild(imageli);
+		makeSubList.appendChild(imageLi);
 		var newImg = document.createElement('img');
 		var setSrc = newImg.setAttribute("src", "images/"+catName+".png");
 		imageLi.appendChild(newImg);
@@ -130,7 +130,7 @@ function getData(){
 				makeSubli.innerHTML =optSubText;
 				makeSubList.appendChild(linksLi);
 			}
-			makeItemLinks(localStorage.key[i], linksLi);  //Create our edit and delete links for each item in local storage
+			makeItemLinks(localStorage.key(i), linksLi);  //Create our edit and delete links for each item in local storage
 		}
 	}
 	//Auto populate Local Storage
@@ -151,6 +151,7 @@ function getData(){
 	function makeItemLinks(key, linksLi){
 		var editLink=document.createElement('a');
 		editLink.href='#';
+		console.log(key);
 		editLink.key=key;
 		var editText="Edit task";
 		editLink.addEventListener("click", editItem);
@@ -170,33 +171,38 @@ function getData(){
 	}
 	function editItem (){
 		//Grab the data from our item from Local Storage.
-		var value = localStorage.getItem (this.key);
+		var value = localStorage.getItem(this.key);
 		var item = JSON.parse(value);
 
 		//Show the forms
 		toggleControls("off");
 
+		
+
 		//Populate the form fields with the current localStorage values.
 		var checkbox = document.forms[0].weekday;
-		for (var i=0; i<checkbox.length; i++) {
-			if (checkbox [i].value == "Monday" && item.checkbox[1] == "Monday") {
-				checkbox [i].setAttribute("checked", "checked");
-			}else{
-				if (checkbox [i].value == "Tuesday" && item.checkbox [1] == "Tuesday"){
-				checkbox [i].setAttribute ("checked", "checked");
+		for (var i=0;i<checkbox.length; i++) {
+			if (checkbox[i].value === item.checkbox[1]){
+				checkbox[i].setAttribute("checked", "checked");
+			}
+			/*
+else{
+				if (checkbox[i].value == "Tuesday" && item.checkbox[1] == "Tuesday"){
+				checkbox[i].setAttribute ("checked", "checked");
 				}else{
-			if (checkbox [i].value == "Wednesday" && item.checkbox [1] == "Wednesday"){
-				checkbox [i].setAttribute ("checked", "checked");
-					}else{ if (checkbox [i].value == "Thursday" && item.checkbox [1] == "Thursday"){
-				checkbox [i].setAttribute ("checked", "checked");
+			if (checkbox[i].value == "Wednesday" && item.checkbox[1] == "Wednesday"){
+				checkbox[i].setAttribute ("checked", "checked");
+					}else{ if (checkbox [i].value == "Thursday" && item.checkbox[1] == "Thursday"){
+				checkbox[i].setAttribute ("checked", "checked");
 						}else{
-			if (checkbox [i].value == "Friday" && item.checkbox [1] == "Friday"){
-				checkbox [i].setAttribute ("checked", "checked");
+			if (checkbox[i].value == "Friday" && item.checkbox[1] == "Friday"){
+				checkbox[i].setAttribute ("checked", "checked");
 								}
 							}
 						}
 					}
 				}
+*/
 		}
 		$('sub').value = item.sub [1];
 		$('period').value = item.period [1];
@@ -212,7 +218,7 @@ function getData(){
 		var editSubmit = $ ('taskSubmit');
 		//Save the key value established in this function as a property of the editSubmit event
 		//so we can use that value when we save the data we edited.
-		editsubmit.addEventListener ("click",validate);
+		editSubmit.addEventListener ("click",validate);
 		editSubmit.key = this.key;
 
 	}
