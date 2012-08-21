@@ -300,7 +300,7 @@ else{
 
 
 	//Variable defaults
-	var taskCategories=["Choose a task", "Grade papers", "Contact parents", "Meetings", "Write lesson plans", "Test", "Projects", "Others"],
+	var taskCategories=["Choose a task", "Grade", "Contact", "Meetings", "Lesson", "Tests", "Projects", "Others"],
 		dayValue;
 		errMsg = $ ('errors');
 
