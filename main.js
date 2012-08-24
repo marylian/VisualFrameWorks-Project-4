@@ -17,9 +17,9 @@ window.addEventListener ("DOMContentLoaded", function(){
 	//Create select field elements and populate with options.
 
 	function makeCats (){
-		 var formTag=document.getElementsByTagName ("form"),
+		 var formTag=document.getElementsByTagName("form"),
 		 selectLi=$('categories'),
-		 makeSelect=document.createElement ('select');
+		 makeSelect=document.createElement('select');
 		  makeSelect.setAttribute("id", "category");
 		 for (i=0; i<taskCategories.length; i++){
 		 	var makeOption=document.createElement('option');
@@ -30,24 +30,25 @@ window.addEventListener ("DOMContentLoaded", function(){
 		 }
 		 selectLi.appendChild(makeSelect);
 	}
-
+	var dayValue=[];
 	//Find the value of selected checkboxes
-	function getSelectedCheckbox () {
-		var checkbox =document.forms[0].weekday;
+	
+	function getSelectedCheckbox(){
+		var checkbox=document.forms[0].weekday;
 		for (var i=0; i<checkbox.length; i++){
-			if (checkbox[i].checked) {
-			dayValue = checkbox [i].value;
+			if(checkbox[i].checked){
+			dayValue.push(checkbox[i].value);
 			}
 		}
 	}
 
-	function toggleControls (m) {
-		switch (m) {
+	function toggleControls(m){
+		switch(m){
 			case "on":
 				$('taskForm').style.display="none";
 				$('clearTask').style.display="inline";
-				$ ('displayTask').style.display="none";
-				$ ('addTask').style.display="inline";
+				$('displayTask').style.display="none";
+				$('addTask').style.display="inline";
 				break;
 			case "off":
 				$('taskForm').style.display="block";
@@ -62,9 +63,9 @@ window.addEventListener ("DOMContentLoaded", function(){
 
 		}
 	} 
-	function storeData (key){
+	function storeData(key){
 		//If there is no key this means this is a brand new item an we need a new key
-		if (!key){
+		if(!key){
 		var id 					=Math.floor(Math.random()*100000001);
 		}else {
 			//Set the id to the exsisting key that we edit so that it will save over the data
@@ -73,12 +74,12 @@ window.addEventListener ("DOMContentLoaded", function(){
 			id = key; 
 		}
 
-
 		//Gather up all our form field values and store in an object.
+		
 		//Object properties contain array with the form label and input value.
-		getSelectedCheckbox ();
-		var item				= {}; 
-			item.checkbox     	= ["Choose a day", dayValue];
+		getSelectedCheckbox();
+		var item				= {};
+			item.checkbox     	= ["Choose a day:", dayValue];
 			item.sub			= ["Subject:", $('sub').value];
 			item.period			= ["Period:", $('period').value];
 			item.grade			= ["Grade Level:", $('grade').value];
@@ -86,10 +87,10 @@ window.addEventListener ("DOMContentLoaded", function(){
 			item.date			= ["Due Date:", $('dueDate').value];
 			item.comments		= ["My Notes:", $('comments').value];
 		//Save data into Local Storage: Use Stringify to convert our object to a string.
-		localStorage.setItem  (id, JSON.stringify (item));
-		alert ("Task Saved!");
+		localStorage.setItem (id, JSON.stringify (item));
+		alert("Task Saved!");
+}
 
-	}
 function getImage(catName, makeSubList){
 		var imageLi = document.createElement('li');
 		makeSubList.appendChild(imageLi);
@@ -106,35 +107,36 @@ function getData(){
 		autoFillData ();
 	}
 		//write data from local storage to the browser.
-		var makeDiv = document.createElement ('div');
-		makeDiv.setAttribute ("id", "cats");
-		var makeList = document.createElement ('ul');
+		var makeDiv = document.createElement('div');
+		makeDiv.setAttribute("id", "cats");
+		var makeList = document.createElement('ul');
 		makeDiv.appendChild (makeList);
 		document.body.appendChild(makeDiv);
         $('cats').style.display="block";
 		for (var i=0, len=localStorage.length; i<len; i++) { 
-			var makeli = document.createElement ('li');
+			var makeli = document.createElement('li');
 			var linksLi=document.createElement('li');
 			makeList.appendChild (makeli);
-			var key = localStorage.key (i);
-			var value = localStorage.getItem (key);
+			var key = localStorage.key(i);
+			var value = localStorage.getItem(key);
 			//convert string from local storage  value back to an object by using JSON.parse
 			var obj = JSON.parse (value);
-			var makeSubList = document.createElement ('ul');
-			makeli.appendChild (makeSubList);
+			var makeSubList=document.createElement('ul');
+			makeli.appendChild(makeSubList);			
 			getImage(obj.category[1], makeSubList);
 			for (var m in obj){
-				var makeSubli = document.createElement ('li');
+				var makeSubli = document.createElement('li');
 				makeSubList.appendChild (makeSubli);
-				var optSubText = obj [m] [0]+ " " +obj [m] [1];
+				var optSubText = obj [m][0]+ " " +obj [m][1];
 				makeSubli.innerHTML =optSubText;
 				makeSubList.appendChild(linksLi);
 			}
 			makeItemLinks(localStorage.key(i), linksLi);  //Create our edit and delete links for each item in local storage
 		}
 	}
+	
 	//Auto populate Local Storage
-	function autoFillData (){
+	function autoFillData(){
 		// The actually JSON Object data required for this to work is coming from our json.js file
 		//which is loaded from our HTML page.
 		//Store the JSON object into Local Storage.
@@ -144,23 +146,17 @@ function getData(){
 		}		
 	}
 
-
-
-
 	//Create the edit and delete links for each item.
 	function makeItemLinks(key, linksLi){
 		var editLink=document.createElement('a');
 		editLink.href='#';
-		console.log(key);
 		editLink.key=key;
 		var editText="Edit task";
 		editLink.addEventListener("click", editItem);
 		editLink.innerHTML=editText;
 		linksLi.appendChild(editLink);
-
 		var lineBreak=document.createElement('br');
 		linksLi.appendChild(lineBreak);
-
 		var deleteLink=document.createElement('a');
 		deleteLink.href="#";
 		deleteLink.key=key;
@@ -169,40 +165,19 @@ function getData(){
 		deleteLink.innerHTML=deleteText;
 		linksLi.appendChild(deleteLink);
 	}
+	
 	function editItem (){
 		//Grab the data from our item from Local Storage.
 		var value = localStorage.getItem(this.key);
 		var item = JSON.parse(value);
-
 		//Show the forms
 		toggleControls("off");
-
-		
-
 		//Populate the form fields with the current localStorage values.
 		var checkbox = document.forms[0].weekday;
 		for (var i=0;i<checkbox.length; i++) {
 			if (checkbox[i].value === item.checkbox[1]){
 				checkbox[i].setAttribute("checked", "checked");
 			}
-			/*
-else{
-				if (checkbox[i].value == "Tuesday" && item.checkbox[1] == "Tuesday"){
-				checkbox[i].setAttribute ("checked", "checked");
-				}else{
-			if (checkbox[i].value == "Wednesday" && item.checkbox[1] == "Wednesday"){
-				checkbox[i].setAttribute ("checked", "checked");
-					}else{ if (checkbox [i].value == "Thursday" && item.checkbox[1] == "Thursday"){
-				checkbox[i].setAttribute ("checked", "checked");
-						}else{
-			if (checkbox[i].value == "Friday" && item.checkbox[1] == "Friday"){
-				checkbox[i].setAttribute ("checked", "checked");
-								}
-							}
-						}
-					}
-				}
-*/
 		}
 		$('sub').value = item.sub [1];
 		$('period').value = item.period [1];
@@ -218,10 +193,10 @@ else{
 		var editSubmit = $ ('taskSubmit');
 		//Save the key value established in this function as a property of the editSubmit event
 		//so we can use that value when we save the data we edited.
-		editSubmit.addEventListener ("click",validate);
+		editSubmit.addEventListener ("click", validate);
 		editSubmit.key = this.key;
-
 	}
+	
 	function deleteItem(){
 		var ask = confirm("Are you sure you want to delete this task?");
 		if (ask){
@@ -247,7 +222,7 @@ else{
 
 
 	}
-	function validate (e){
+	function validate(e){
 		//Define the elements we want to check
 		var getSub = $('sub');
 		var getPeriod = $('period');
